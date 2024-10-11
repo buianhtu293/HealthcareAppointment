@@ -1,4 +1,7 @@
 
+using HealthcareAppointment.Data.Data;
+using Microsoft.EntityFrameworkCore;
+
 namespace HealthcareAppointment
 {
     public class Program
@@ -13,6 +16,9 @@ namespace HealthcareAppointment
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            builder.Services.AddDbContext<HealthcareDbContext>(options =>
+            options.UseSqlServer(builder.Configuration.GetConnectionString("HealthcareConnectionString")));
 
             var app = builder.Build();
 
