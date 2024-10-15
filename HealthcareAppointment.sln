@@ -3,13 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34728.123
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HealthcareAppointment.WebAPI", "HealthcareAppointment\HealthcareAppointment.WebAPI.csproj", "{EC3DA1B0-FE67-4A0D-B1B0-62B07A49624F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HealthcareAppointment.WebAPI", "HealthcareAppointment\HealthcareAppointment.WebAPI.csproj", "{EC3DA1B0-FE67-4A0D-B1B0-62B07A49624F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HealthcareAppointment.Models", "HealthcareAppointment.Models\HealthcareAppointment.Models.csproj", "{FFD2DBC5-0AFF-4EF4-B87C-B3D3CDA3100E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HealthcareAppointment.Models", "HealthcareAppointment.Models\HealthcareAppointment.Models.csproj", "{FFD2DBC5-0AFF-4EF4-B87C-B3D3CDA3100E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HealthcareAppointment.Data", "HealthcareAppointment.Data\HealthcareAppointment.Data.csproj", "{082CC066-4D80-4733-9506-4F3295930850}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HealthcareAppointment.Data", "HealthcareAppointment.Data\HealthcareAppointment.Data.csproj", "{082CC066-4D80-4733-9506-4F3295930850}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HealthcareAppointment.Business", "HealthcareAppointment.Business\HealthcareAppointment.Business.csproj", "{0B07B9C7-23C3-41EE-8AFF-5A997116BEED}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HealthcareAppointment.Business", "HealthcareAppointment.Business\HealthcareAppointment.Business.csproj", "{0B07B9C7-23C3-41EE-8AFF-5A997116BEED}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShareKernel", "ShareKernel\ShareKernel.csproj", "{5B570FAE-0699-4FB6-8D54-5DC9D4A0F0E5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{0B07B9C7-23C3-41EE-8AFF-5A997116BEED}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0B07B9C7-23C3-41EE-8AFF-5A997116BEED}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0B07B9C7-23C3-41EE-8AFF-5A997116BEED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5B570FAE-0699-4FB6-8D54-5DC9D4A0F0E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B570FAE-0699-4FB6-8D54-5DC9D4A0F0E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5B570FAE-0699-4FB6-8D54-5DC9D4A0F0E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B570FAE-0699-4FB6-8D54-5DC9D4A0F0E5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

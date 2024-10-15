@@ -1,5 +1,11 @@
 
+using HealthcareAppointment.Business.Mappings;
+using HealthcareAppointment.Business.Services.AppointmentService;
+using HealthcareAppointment.Business.Services.DoctorService;
+using HealthcareAppointment.Business.Services.PatientService;
 using HealthcareAppointment.Data.Data;
+using HealthcareAppointment.Data.Repositories;
+using HealthcareAppointment.Models.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace HealthcareAppointment
@@ -19,6 +25,17 @@ namespace HealthcareAppointment
 
             builder.Services.AddDbContext<HealthcareDbContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("HealthcareConnectionString")));
+
+            builder.Services.AddTransient<IPatientRepository, PatientRepository>();
+            builder.Services.AddTransient<IPatientService, PatientService>();
+
+            builder.Services.AddTransient<IDoctorRepository, DoctorRepository>();
+            builder.Services.AddTransient<IDoctorService, DoctorService>();
+
+            builder.Services.AddTransient<IAppointmentRepository, AppointmentRepository>();
+            builder.Services.AddTransient<IAppointmentService, AppointmentService>();
+
+            builder.Services.AddAutoMapper(typeof(AutoMapperProfiles));
 
             var app = builder.Build();
 
