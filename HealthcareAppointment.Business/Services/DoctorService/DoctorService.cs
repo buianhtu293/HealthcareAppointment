@@ -7,6 +7,9 @@ using AutoMapper;
 using HealthcareAppointment.Models.Interfaces;
 using HealthcareAppointment.Models.Models.Domain;
 using HealthcareAppointment.Models.Models.DTO;
+using HealthcareAppointment.Models.Specifications;
+using ShareKernel.CoreService;
+using ShareKernel.Enum;
 
 namespace HealthcareAppointment.Business.Services.DoctorService
 {
@@ -44,25 +47,54 @@ namespace HealthcareAppointment.Business.Services.DoctorService
             return mapper.Map<DoctorDto>(doctorDomain);
         }
 
-        public async Task<List<DoctorDto>> GetAllDoctor()
+        public async Task<PaginationList<DoctorDto>> GetAllDoctor(DoctorSpeParam doctorSpeParam)
         {
-            var userDomains = await doctorRepository.GetAll();
+            var spec = new BaseSpecification<User>(x =>
+                (string.IsNullOrWhiteSpace(doctorSpeParam.Search) || x.Name.Contains(doctorSpeParam.Search.EncodingUTF8())) &&
+                (x.Role == (int)Role.Doctor)
+            );
 
-            var doctorDomain = userDomains.Where(x => x.Role == 0);
+            if (doctorSpeParam.IsDescending)
+            {
+                spec.AddOrderByDescending(x => x.Name);
+            }
+            else
+            {
+                spec.AddOrderByAscending(x => x.Name);
+            }
 
-            return mapper.Map<List<DoctorDto>>(doctorDomain);
+            int skip = (doctorSpeParam.pageIndex - 1) * doctorSpeParam.pageSize;
+            int take = doctorSpeParam.pageSize;
+            spec.ApplyPaging(take, skip);
+
+            var doctorDomain = await doctorRepository.GetAll(spec);
+            var result = mapper.Map<PaginationList<DoctorDto>>(doctorDomain);
+
+            return result;
         }
 
-        public async Task<DoctorDto> GetDoctorById(Guid id)
+        public async Task<DoctorDto> GetDoctorById(Guid id, bool isInclude)
         {
-            var doctorDomain = await doctorRepository.GetById(id);
+            User? doctor;
+            var spec = new BaseSpecification<User>(x => x.Role == (int)Role.Doctor);
 
-            if (doctorDomain == null)
+            if (isInclude)
+            {
+                spec.AddInclude(x => x.AppointmentDoctors);
+                doctor = await doctorRepository.GetById(id, spec);
+            }
+            else
+            {
+                doctor = await doctorRepository.GetById(id, spec);
+            }
+
+            if(doctor == null)
             {
                 return null;
             }
 
-            return mapper.Map<DoctorDto>(doctorDomain);
+            var result = mapper.Map<DoctorDto>(doctor);
+            return result;
         }
 
         public async Task<DoctorDto> UpdateDoctor(Guid id, UpdateDoctorRequestDto updateDoctorRequestDto)

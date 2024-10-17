@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using HealthcareAppointment.Data.Data;
 using HealthcareAppointment.Models.Interfaces;
+using HealthcareAppointment.Models.Specifications;
 using Microsoft.EntityFrameworkCore;
 
 namespace HealthcareAppointment.Data.Repositories
@@ -39,14 +40,61 @@ namespace HealthcareAppointment.Data.Repositories
             return entity;
         }
 
-        public async Task<List<T>> GetAll()
+        public async Task<PaginationList<T>> GetAll(ISpecification<T> spec)
         {
-            return await dbContext.Set<T>().ToListAsync();
+            var entities = dbContext.Set<T>().AsQueryable();
+
+            if(spec.Fillter != null)
+            {
+                entities = entities.Where(spec.Fillter);
+            }
+
+            if(spec.OrderByAscending != null)
+            {
+                entities = entities.OrderBy(spec.OrderByAscending);
+            }
+
+            if(spec.OrderByDescending != null)
+            {
+                entities = entities.OrderByDescending(spec.OrderByDescending);
+            }
+
+            var totalRecords = await entities.CountAsync();
+            var totalPages = (int)Math.Ceiling((double)totalRecords / spec.Take);
+
+            if (spec.IsPagingEnable)
+            {
+                entities = entities.Skip(spec.Skip).Take(spec.Take);
+            }
+
+            var items = await entities.ToListAsync();
+
+            var pageNumber = spec.Skip / spec.Take + 1;
+
+            var result = new PaginationList<T>(items, pageNumber, totalPages, totalRecords);
+            return result;
         }
 
-        public async Task<T?> GetById(P id)
+        public async Task<T?> GetById(P id, ISpecification<T> spec)
         {
-            return await dbContext.Set<T>().FindAsync(id);
+            var entities = dbContext.Set<T>().AsQueryable();
+
+            if (spec.Fillter != null)
+            {
+                entities = entities.Where(spec.Fillter);
+            }
+
+            if (spec.Includes != null && spec.Includes.Count > 0)
+            {
+                foreach( var item in spec.Includes)
+                {
+                    entities = entities.Include(item);
+                }
+            }
+
+            var entity = await entities.FirstOrDefaultAsync(x => EF.Property<P>(x, "Id").Equals(id));
+
+            return entity;
         }
 
         public async Task<T?> Update(P id, T entity)

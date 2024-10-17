@@ -1,5 +1,6 @@
 ﻿using HealthcareAppointment.Business.Services.AppointmentService;
 using HealthcareAppointment.Models.Models.DTO;
+using HealthcareAppointment.Models.Specifications;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,16 +18,16 @@ namespace HealthcareAppointment.WebAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllAppointment()
+        public async Task<IActionResult> GetAllAppointment([FromQuery] AppointmentSpeParam appointmentSpeParam)
         {
-            return Ok(await appointmentService.GetAllAppointment());
+            return Ok(await appointmentService.GetAllAppointment(appointmentSpeParam));
         }
 
         [HttpGet]
         [Route("{id:Guid}")]
-        public async Task<IActionResult> GetAppointmentById([FromRoute] Guid id)
+        public async Task<IActionResult> GetAppointmentById([FromRoute] Guid id, [FromQuery] bool isInclude)
         {
-            var appointmentDto = await appointmentService.GetAppointmentById(id);
+            var appointmentDto = await appointmentService.GetAppointmentById(id, isInclude);
 
             if (appointmentDto == null)
             {
@@ -78,9 +79,9 @@ namespace HealthcareAppointment.WebAPI.Controllers
 
         [HttpGet]
         [Route("{doctorId:Guid}/search")]
-        public async Task<IActionResult> GetAppointmentByDoctorId([FromRoute] Guid doctorId, [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 1000)
+        public async Task<IActionResult> GetAppointmentByDoctorId([FromRoute] Guid doctorId, [FromQuery] AppointmentSpeParam appointmentSpeParam)
         {
-            var appointmentDtos = await appointmentService.GetAppointmentByDoctorId(doctorId, pageNumber, pageSize);
+            var appointmentDtos = await appointmentService.GetAppointmentByDoctorId(doctorId, appointmentSpeParam);
 
             return Ok(appointmentDtos);
         }

@@ -8,7 +8,7 @@ namespace ShareKernel.Enum
 {
     public enum Role
     {
-        Patient,
-        Doctor
+        Doctor,
+        Patient
     }
 }

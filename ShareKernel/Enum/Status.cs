@@ -9,7 +9,7 @@ namespace ShareKernel.Enum
     public enum Status
     {
         Scheduled,
-        Completed,
-        Cancelled
+        Cancelled,
+        Completed
     }
 }

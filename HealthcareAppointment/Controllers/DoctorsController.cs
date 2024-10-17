@@ -1,6 +1,7 @@
 ﻿using HealthcareAppointment.Business.Services.DoctorService;
 using HealthcareAppointment.Business.Services.PatientService;
 using HealthcareAppointment.Models.Models.DTO;
+using HealthcareAppointment.Models.Specifications;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,16 +19,16 @@ namespace HealthcareAppointment.WebAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllDoctor() 
+        public async Task<IActionResult> GetAllDoctor([FromQuery] DoctorSpeParam doctorSpeParam) 
         {
-            return Ok(await doctorService.GetAllDoctor());
+            return Ok(await doctorService.GetAllDoctor(doctorSpeParam));
         }
 
         [HttpGet]
         [Route("{id:Guid}")]
-        public async Task<IActionResult> GetDoctorById([FromRoute] Guid id)
+        public async Task<IActionResult> GetDoctorById([FromRoute] Guid id, [FromQuery] bool isIncludeAppointment = false)
         {
-            var doctorDto = await doctorService.GetDoctorById(id);
+            var doctorDto = await doctorService.GetDoctorById(id, isIncludeAppointment);
 
             if (doctorDto == null)
             {
